@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Question</title>
+
+<style>
+
+/* PAGE 100% */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #58cc02, #1cb0f6);
+}
+
+/* CONTENEUR PRINCIPAL */
+.quiz-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* QUESTION */
+.question-text {
+    font-size: 32px;
+    font-weight: bold;
+    color: #111;   /* PLUS FONCÉ */
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+/* OPTIONS */
+.options {
+    width: 80%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* BOUTONS */
+.option-btn {
+    background: #222;     /* FONCÉ */
+    color: white;
+    border: none;
+    padding: 20px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.option-btn:hover {
+    background: #000;
+    transform: scale(1.05);
+}
+
+</style>
+</head>
+
+<body>
+    <header><div class="menu-container">
+    <div class="menu-icon" onclick="toggleMenu()">menu:|||</div>
+    <div id="sideMenu" class="side-menu">
+        <a href="/langues">🎓 recommencer le jeu </a>
+    </div>
+</div>
+</header>
+
+<div class="quiz-container">
+
+    <div class="question-text">
+        <h1>TRADUIRE:</h1>
+        {{ question }}
+    </div>
+
+    <form method="post" class="options">
+        {% for option in options %}
+        <button class="option-btn" name="reponse" value="{{ option }}">
+            {{ option }}
+        </button>
+        {% endfor %}
+    </form>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Langues Africaines{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    
+  <h1>🌍 Langues Africaines</h1>
+    <h2>LA CONSERVATION DU PATRIONE CULTUREL C'EST MAINTENANT </h2>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>© Projet éducatif — Cameroun</p>
+     <div class="overlay">
+    </div>
+</section>
+</footer>
+<script>
+function toggleMenu() {
+    var menu = document.getElementById("sideMenu");
+    if (menu.style.left === "0px") {
+        menu.style.left = "-250px";
+    } else {
+        menu.style.left = "0px";
+    }
+}
+</script>
+
+</body>
+</html>

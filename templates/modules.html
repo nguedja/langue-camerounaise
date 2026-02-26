@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Modules</title>
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, red, orange, yellow, green, blue, indigo, violet);
+}
+
+/* Bandeau haut */
+.top-banner {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Liste modules */
+.module-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 10px;
+    gap: 20px;
+}
+
+.module-card {
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.module-card.free {
+    border: 3px solid green;
+}
+
+.module-card.paid {
+    border: 3px solid orange;
+}
+
+.module-card:hover {
+    transform: scale(1.05);
+}
+
+/* Bouton retour */
+.bottom-banner {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red);
+}
+
+.back-btn {
+    background: white;
+    color: black;
+    padding: 12px 30px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.back-btn:hover {
+    background: black;
+    color: white;
+}
+</style>
+</head>
+<body>
+
+<div class="bottom-banner">
+    <h2>MODULE DISPONIBLE:</h2>
+    </div>
+
+<div class="module-list">
+    {% for module in modules %}
+        <div class="module-card {% if module.payant %}paid{% else%}free{% endif %}" 
+             onclick="window.location.href='{{ module.url }}'">
+            {{ module.nom }} {% if module.payant %} (Payant) {% else %} (Gratuit) {% endif %}
+        </div>
+    {% endfor %}
+</div>
+
+<div class="bottom-banner">
+    <a class="back-btn" href="/apprendre">🏠 Retour à Apprendre</a>
+</div>
+
+</body>
+</html>

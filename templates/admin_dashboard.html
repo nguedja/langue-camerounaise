@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Dashboard Admin</h2>
+
+<p>Nombre total d'utilisateurs : {{ total_users }}</p>
+<p>Nombre total de scores : {{ total_scores }}</p>
+
+<h3>Liste des utilisateurs</h3>
+
+<ul>
+    {% for user in users %}
+        <li>  <nav>
+    <div class="hero-buttons">
+        <a class="btn" href="/delete-user/{{user[0]}}">supprimer cette utilisateur</a>
+    </div>
+    <nav>
+            {{ user[1] }} {{ user[2] }} ({{ user[3] }})
+        </li>
+    {% endfor %}
+</ul>
+<nav><div class="hero-buttons">
+<a class="btn" href="/accueil">appuyer pour aller a l'acceuil</a></div></nav>
+
+{% endblock %}

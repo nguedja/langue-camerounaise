@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Scores{% endblock %}
+
+{% block content %}
+<header>
+    
+    <nav>
+    <div class="hero-buttons">
+        <a class="btn" href="/apprendre">🎓 recommencer le quiz j'espere que vous avez appris de nouvelles choses dans votre langue local </a>
+    </div>
+    <nav>
+</header>
+<h2>Scores récents</h2>
+
+<table>
+<tr>
+    <th>Date</th><th>Nom</th><th>Langue</th><th>Niveau</th><th>Score</th>
+</tr>
+
+{% for s in scores %}
+<tr>
+    <td>{{ s[7] }}</td>
+    <td>{{ s[1] }}</td>
+    <td>{{ s[3] }}</td>
+    <td>{{ s[4] }}</td>
+    <td>{{ s[5] }}/{{ s[6] }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback</title>
+<style>
+html, body {
+    margin:0; padding:0; width:100%; height:100%;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #8f00ff);
+    display: flex; justify-content: center; align-items: center;
+}
+
+.feedback-container {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+}
+
+/* Personnage */
+.character-wrapper { display: flex; justify-content: center; margin-bottom: 30px; }
+.character { width: 250px; height: 350px; position: relative; animation: breathe 3s infinite ease-in-out; }
+
+.head { width: 150px; height: 150px; background: #8d5524; border-radius: 50%; margin:auto; position:relative; }
+.hair { width:150px; height:70px; background:#2e1b0f; border-radius:70px 70px 0 0; position:absolute; top:0; }
+.eye { width:20px; height:20px; background:white; border-radius:50%; position:absolute; top:50px; animation: blink 4s infinite; }
+.left-eye { left:40px; } .right-eye { right:40px; }
+.eye::after { content:""; width:10px; height:10px; background:black; border-radius:50%; position:absolute; top:5px; left:5px; }
+
+.mouth { width:50px; height:15px; background:black; border-radius:10px; position:absolute; bottom:35px; left:50px; transition: height 0.08s ease; }
+
+.body { width:130px; height:140px; background:#d72638; margin:auto; border-radius:25px; position:relative; overflow:hidden; }
+.pattern { width:100%; height:100%; background:repeating-linear-gradient(45deg,#f46036,#f46036 10px,#2e294e 10px,#2e294e 20px); opacity:0.6; }
+
+.arm { width:30px; height:110px; background:#8d5524; position:absolute; top:160px; border-radius:20px; }
+.left-arm { left:0; } .right-arm { right:0; }
+
+.aura { position:absolute; width:250px; height:250px; background: radial-gradient(circle, rgba(88,204,2,0.5), transparent); border-radius:50%; top:-50px; left:-25px; z-index:-1; opacity:0; }
+
+.stars .star { width:20px; height:20px; background: gold; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); position:absolute; animation:sparkle 1s infinite alternate; }
+
+.message { font-size:2rem; font-weight:bold; margin:20px 0; }
+.success { color:green; }
+.error { color:red; }
+
+audio { width:80%; margin:20px 0; }
+.next-btn { padding:20px 50px; font-size:1.8rem; border-radius:40px; border:none; background:#58cc02; color:white; cursor:pointer; }
+
+@keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+@keyframes blink { 0%,95%,100% { height:20px; } 97% { height:2px; } }
+
+.talking .left-arm { animation: waveLeft 0.3s infinite alternate; }
+.talking .right-arm { animation: waveRight 0.3s infinite alternate; }
+
+@keyframes waveLeft { from{transform:rotate(0deg);} to{transform:rotate(-30deg);} }
+@keyframes waveRight { from{transform:rotate(0deg);} to{transform:rotate(30deg);} }
+
+</style>
+</head>
+<body>
+    <div class="menu-container">
+    <div class="menu-icon" onclick="toggleMenu()">menu:|||</div>
+    <div id="sideMenu" class="side-menu">
+    <a href="/langues">🎓 recommencer le jeu </a>
+    <h1>ecoute d'abord le son avant de passer a la question suivante</h1>
+    </div>
+</div>
+
+<div class="feedback-container">
+    <div class="character-wrapper">
+        <div id="character" class="character {% if etat == 'ok' %}victory{% else %}defeat{% endif %}">
+            <div class="aura"></div>
+            {% if etat=="ok" %}
+            <div class="stars">
+                <div class="star"></div>
+                <div class="star"></div>
+                <div class="star"></div>
+            </div>
+            {% endif %}
+            <div class="head">
+                <div class="hair"></div>
+                <div class="eye left-eye"></div>
+                <div class="eye right-eye"></div>
+                <div id="mouth" class="mouth"></div>
+            </div>
+            <div class="body">
+                <div class="pattern"></div>
+            </div>
+            <div class="arm left-arm"></div>
+            <div class="arm right-arm"></div>
+        </div>
+    </div>
+
+    {% if etat=="ok" %}
+    <div class="message success">✨ bravo bonne reponse</div>
+    {% else %}
+    <div class="message error">❌ Ce n'est pas correct<br>Bonne réponse : <b>{{ bonne }}</b></div>
+    {% endif %}
+
+    <audio id="audio" controls autoplay>
+        <source src="{{ url_for('static', filename=audio_path) }}" type="audio/mpeg">
+    </audio>
+
+    <button id="nextBtn" class="next-btn" disabled onclick="window.location.href='/question'">Question suivante →</button>
+</div>
+
+<script>
+let audio = document.getElementById("audio");
+let character = document.getElementById("character");
+let mouth = document.getElementById("mouth");
+let nextBtn = document.getElementById("nextBtn");
+let interval;
+
+audio.onplay = function() {
+    character.classList.add("talking");
+    interval = setInterval(() => {
+        let dynamicHeight = Math.random() * 35 + 5;
+        mouth.style.height = dynamicHeight + "px";
+    }, 80);
+};
+
+audio.onended = function() {
+    clearInterval(interval);
+    mouth.style.height = "15px";
+    character.classList.remove("talking");
+    nextBtn.disabled = false;
+};
+</script>
+
+</body>
+</html>

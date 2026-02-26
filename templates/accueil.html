@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+
+<!-- MENU HAMBURGER -->
+<div class="menu-container">
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div id="sideMenu" class="side-menu">
+        <a href="/apprendre">🎓 Apprendre</a>
+        <a href="/decouvrir">🌍 Découvrir</a>
+        <a href="/produits">🛒 Produits</a>
+        <a href="/logout">🔄 Changer de compte</a>
+        <a href="/register">➕ Créer un compte</a>
+        <a href="/parametres">⚙ Paramètres</a>
+        <a href="/paiement">💳 Paiement / Encourager</a>
+    </div>
+</div>
+
+
+
+<!-- GRAND BLOC ARC-EN-CIEL CLIQUABLE -->
+<section class="quiz-entry" onclick="window.location.href='/apprendre' ">
+    <h1>🇨🇲🇨🇲🇨🇲🇨🇲</h1>
+    <h1>clique ici!!</h1>
+    <h1>🎯 COMMENCE PUIS APPREND TA LANGUE LOCALE OU AUTRES LANGUES EN 7 MOIS</h1>
+    <p>Apprends ta langue locale maintenant !</p>
+</section>
+</section>
+<h2>PARCOURIR LE CAMEROUN L'AVENTURE C'EST MAINTENANT</h2>
+<section class="hero-section" style="background-image: url('{{ url_for('static', filename='images/accueil/1.mp4') }}');">
+    <div class="overlay">
+        <h2>Yaoundé🇨🇲</h2>
+        <p>Le cœur politique et culturel du Cameroun.</p>
+        <p>encourager nous encourager nous encourager nous encourager nous</p>
+    </div>
+</section>
+
+<section class="hero-section" style="background-image: url('{{ url_for('static', filename='images/accueil/2.mp4') }}');">
+    <div class="overlay">
+        <h2>Douala🇨🇲</h2>
+        <p>La capitale économique, vivante et dynamique.</p>
+    </div>
+</section>
+
+<section class="hero-section" style="background-image: url('{{ url_for('static', filename='images/accueil/3.mp4') }}');">
+    <div class="overlay">
+        <h2>Foumban🇨🇲</h2>
+        <p>Berceau de l’histoire et des traditions.</p>
+    </div>
+</section>
+<section class="hero-section" style="background-image: url('{{ url_for('static', filename='images/accueil/4.mp4') }}');">
+    <div class="overlay">
+        <h2>bangolap🇨🇲</h2>
+        <p>Berceau de l’histoire et des traditions.</p>
+        <p>ici c'est chez moi savourer l'odeur du vilage</p>
+    </div>
+</section> 
+
+
+{% endblock %}

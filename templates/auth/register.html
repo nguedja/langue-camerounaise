@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+
+<style>
+
+/* FOND ARC-EN-CIEL ANIMÉ */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 400% 400%;
+    animation: rainbow 10s ease infinite;
+}
+
+/* Animation */
+@keyframes rainbow {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* Carte formulaire */
+.auth-container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* Titre */
+.auth-container h2 {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    color: #333;
+}
+
+/* Inputs */
+.form-auth input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+/* Bouton */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #333;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+.btn:hover {
+    background: black;
+}
+
+/* Liens */
+.auth-container a {
+    color: #333;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.auth-container a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 25px;
+    }
+
+    .auth-container h2 {
+        font-size: 1.5rem;
+    }
+}
+
+</style>
+
+<div class="auth-container">
+    <h2>🇨🇲🇨🇲</h2>
+
+    <h2>📝 Créer un compte</h2>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" class="form-auth">
+        <input name="nom" placeholder="Nom" required>
+        <input name="prenom" placeholder="Prénom" required>
+        <input name="email" type="email" placeholder="Email" required>
+        <input name="telephone" placeholder="Téléphone" required>
+        <input name="password" type="password" placeholder="Mot de passe" required>
+
+        <button class="btn">S'inscrire</button>
+    </form>
+
+    <p style="margin-top:15px;">
+        Déjà inscrit ? <a href="/login">Se connecter</a>
+    </p>
+
+</div>
+
+{% endblock %}

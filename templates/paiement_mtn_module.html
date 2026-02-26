@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Paiement MTN</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(45deg, #fcd34d, #f59e0b, #ef4444, #8b5cf6);
+    background-size: 400% 400%;
+    animation: rainbow 10s ease infinite;
+}
+@keyframes rainbow {
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
+}
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+}
+input {
+    width: 80%;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+button {
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: none;
+    background: #22c55e;
+    color: white;
+    cursor: pointer;
+}
+button:hover {background: #16a34a;}
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Paiement MTN pour le module : {{ module.nom_module }}</h2>
+    <form method="post">
+        <p>Montant minimal : 500 FCFA</p>
+        <input type="number" name="montant" placeholder="Entrez le montant" required min="500">
+        <br>
+        <button type="submit">Payer avec MTN</button>
+    </form>
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+</div>
+</body>
+</html>

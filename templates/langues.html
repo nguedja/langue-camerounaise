@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Langues{% endblock %}
+
+{% block content %}
+
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
+    background-size: 400% 400%;
+    animation: rainbow 10s ease infinite;
+    font-family: Arial, sans-serif;
+}
+
+@keyframes rainbow {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+select {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+</style>
+
+<div class="container">
+    <h2>Choisissez une langue</h2>
+
+    <form method="get" id="langForm">
+        <select name="langue" id="langueSelect" required>
+            <option value="">-- Sélectionner --</option>
+            {% for langue in langues %}
+                <option value="{{ langue }}">{{ langue }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="button" onclick="goToNiveau()">Continuer</button>
+    </form>
+</div>
+
+<script>
+function goToNiveau(){
+    let langue = document.getElementById("langueSelect").value;
+    if(langue){
+        window.location.href = "/niveaux/" + langue;
+    }
+}
+</script>
+
+{% endblock %}

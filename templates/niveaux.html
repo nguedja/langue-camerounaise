@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Niveaux{% endblock %}
+
+{% block content %}
+
+<style>
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #58cc02, #1cb0f6);
+    font-family: Arial;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+}
+
+select {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 100%;
+    font-size: 1.1rem;
+    border-radius: 10px;
+    border: none;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+</style>
+
+<div class="container">
+    <h2>{{ langue }} — Choisissez un niveau</h2>
+
+    <select id="niveauSelect" required>
+        <option value="">-- Sélectionner --</option>
+        {% for niveau in niveaux %}
+            <option value="{{ niveau }}">{{ niveau }}</option>
+        {% endfor %}
+    </select>
+
+    <button onclick="startQuiz()">Démarrer</button>
+</div>
+
+<script>
+function startQuiz(){
+    let niveau = document.getElementById("niveauSelect").value;
+    if(niveau){
+        window.location.href = "/demarrer/{{ langue }}/" + niveau;
+    }
+}
+</script>
+
+{% endblock %}

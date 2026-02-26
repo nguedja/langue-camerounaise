@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Apprendre</title>
+
+<style>
+
+/* PAGE COMPLETE */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+}
+
+/* BANDEAU ARC EN CIEL */
+.top-banner {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+}
+
+.payment-logos {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.payment-logos img {
+    width: 120px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.payment-logos img:hover {
+    transform: scale(1.1);
+}
+
+/* SECTION LANGUES */
+.languages-section {
+    flex: 1;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.languages-section h2 {
+    margin-bottom: 30px;
+}
+
+/* SLIDER LANGUES */
+
+.language-slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slider-track {
+    display: flex;
+    gap: 40px;
+    animation: scroll 25s linear infinite;
+}
+
+.language-card {
+    min-width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.language-card img {
+    width: 120px;
+}
+
+.language-card:hover {
+    transform: scale(1.1);
+}
+
+/* Animation automatique */
+@keyframes scroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* BOUTON BAS ARC EN CIEL */
+.bottom-banner {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red);
+}
+
+.quiz-btn {
+    background: white;
+    color: black;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 40px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.quiz-btn:hover {
+    background: black;
+    color: white;
+}
+
+</style>
+</head>
+
+<body>
+    <!-- BANDEAU HAUT -->
+<div class="top-banner">
+    Encouragez-nous 💛
+
+    <div class="payment-logos">
+        <a href="/paiement/mtn">
+            <img src="{{ url_for('static', filename='images/mtn.jpg') }}" alt="MTN MoMo">
+        </a>
+
+        <a href="/paiement/orange">
+            <img src="{{ url_for('static', filename='images/orange.jpg') }}" alt="Orange Money">
+        </a>
+    </div>
+</div>
+
+<div class="bottom-banner">
+    <h2>clique ici pour apprendre une langue.</h2>
+    <a class="quiz-btn" href="/langues">🚀 choisir ta langue et Lance le quiz </a>
+</div>
+<div class="bottom-banner">
+    <h2>voir les modules inscrits dans chaque langue!!</h2>
+    <a class="quiz-btn" href="/modules">module des langues!</a>
+</div>
+
+
+
+<!-- SECTION LANGUES -->
+<div class="languages-section">
+    <h2>cliquer sur un logo (village)  pour adherer a l'histoire de ta culture.</h2>
+
+    <div class="language-slider">
+        <div class="slider-track">
+
+            <div class="language-card" onclick="window.location.href='/langue/bangante'">
+                <img src="{{ url_for('static', filename='images/bangante.jpg') }}">
+                <p>Bangangté</p>
+            </div>
+
+            <div class="language-card" onclick="window.location.href='/langue/bafoussam'">
+                <img src="{{ url_for('static', filename='images/bafoussam.jpg') }}">
+                <p>Bafoussam</p>
+            </div>
+
+            <div class="language-card" onclick="window.location.href='/langue/douala'">
+                <img src="{{ url_for('static', filename='images/douala.jpg') }}">
+                <p>Douala</p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- BOUTON BAS -->
+<div class="bottom-banner">
+    <h2>clique ici pour apprendre une langue.</h2>
+    <a class="quiz-btn" href="/langues">🚀 choisir ta langue et Lance le quiz</a>
+</div>
+
+</body>
+</html>
