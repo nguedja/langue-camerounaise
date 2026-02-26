@@ -1,3 +1,4 @@
+import os
 from auth import register, login, logout
 from flask import Flask, render_template, request, redirect, session
 from dictionnaire import langues
@@ -289,6 +290,7 @@ def module_detail(langue, niveau, nom_module):
     return render_template("module_detail.html", module=module)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))  # Render fournit le port
+    app.run(host="0.0.0.0", port=port, debug=True)
 
 
