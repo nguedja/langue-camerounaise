@@ -8,6 +8,9 @@ from database import Database
 app = Flask(__name__)
 app.secret_key = "secret123"
 db = Database()
+@app.route("/ping")
+def ping():
+    return "OK", 200
 @app.route("/")
 def index():
     return render_template("loading.html")
