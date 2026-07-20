@@ -108,7 +108,7 @@ body {
 
         <div class="langues-grid">
             {% for langue in langues %}
-            <div class="langue-card" onclick="selectLangue({{ langue[0 }}, this)" data-id="{{ langue[0] }}">
+            <div class="langue-card" onclick="selectLangue({{ langue[0] }}, this)" data-id="{{ langue[0] }}">
                 <div class="icone">
                     {% if langue[1] == "Bangante" %}🏔️
                     {% elif langue[1] == "Bassa" %}🌊

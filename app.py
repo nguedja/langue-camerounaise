@@ -451,8 +451,65 @@ def api_progression(langue_id):
     })
 
 
+def seed_database():
+    from dictionnaire import structure, traductions as trads_dict
+
+    if db.compter_mots_total() > 0:
+        return
+
+    db.initialiser_langues()
+    db.initialiser_categories()
+
+    mot_categorie = {}
+    for niveau, cats in structure.items():
+        for cat_name, mots in cats.items():
+            for mot in mots:
+                mot_categorie[mot] = cat_name
+
+    conn = db.connect()
+    cur = conn.cursor()
+
+    for niveau, cats in structure.items():
+        for cat_name, mots in cats.items():
+            cat = db.get_categorie_by_nom(cat_name)
+            if not cat:
+                continue
+            cat_id = cat[0]
+            for idx, mot in enumerate(mots):
+                cur.execute(
+                    "INSERT INTO mots_francais(mot, categorie_id, niveau, ordre) VALUES(?,?,?,?)",
+                    (mot, cat_id, niveau, idx + 1),
+                )
+
+    conn.commit()
+
+    cur.execute("SELECT id, mot FROM mots_francais")
+    all_mots = cur.fetchall()
+
+    cur.execute("SELECT id, nom FROM langues")
+    all_langues = cur.fetchall()
+    langue_map = {l[1].lower(): l[0] for l in all_langues}
+
+    for mot_id, mot in all_mots:
+        mot_lower = mot.lower()
+        for key in trads_dict:
+            if key.lower() == mot_lower or mot_lower in key.lower():
+                for langue_name, traduction in trads_dict[key].items():
+                    if langue_name in langue_map:
+                        langue_id = langue_map[langue_name]
+                        cur.execute(
+                            "INSERT INTO traductions(mot_id, langue_id, traduction_texte, user_id, statut, date) VALUES(?,?,'system',0,'validee','2024-01-01')",
+                            (mot_id, langue_id),
+                        )
+                break
+
+    conn.commit()
+    conn.close()
+
+
 if __name__ == "__main__":
     db.initialiser_langues()
     db.initialiser_categories()
+    seed_database()
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
