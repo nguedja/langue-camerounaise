@@ -1,0 +1,96 @@
+{% extends "basse.html" %}
+{% block title %}Pas assez de traductions{% endblock %}
+{% block content %}
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wait-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.wait-container .icon { font-size: 4rem; margin-bottom: 15px; }
+.wait-container h1 { font-size: 1.5rem; color: #1a1a2e; margin-bottom: 10px; }
+.wait-container p { color: #666; margin-bottom: 20px; }
+
+.progress-info {
+    background: #f0f4ff;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.progress-info .count {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #0f3460;
+}
+
+.progress-info .label { color: #666; }
+
+.progress-bar {
+    background: #e0e0e0;
+    height: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #0f3460;
+    border-radius: 5px;
+    transition: width 0.5s;
+}
+
+.btn {
+    display: block;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 15px;
+}
+
+.btn-primary { background: #0f3460; color: white; }
+.btn-primary:hover { background: #1a1a2e; }
+.btn-secondary { background: #e0e0e0; color: #333; }
+</style>
+
+<div class="wait-container">
+    <div class="icon">📝</div>
+    <h1>Pas assez de traductions</h1>
+    <p>Il faut au moins {{ nb_requis }} mots traduits pour ce test</p>
+
+    <div class="progress-info">
+        <div class="count">{{ nb_traduit }} / {{ nb_requis }}</div>
+        <div class="label">traductions collectees</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ (nb_traduit / nb_requis * 100) }}%"></div>
+        </div>
+    </div>
+
+    <a href="/contribuer?niveau={{ niveau }}" class="btn btn-primary">
+        Aider a traduire les mots →
+    </a>
+    <a href="/apprendre" class="btn btn-secondary">Retour</a>
+</div>
+
+{% endblock %}

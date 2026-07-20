@@ -1,0 +1,130 @@
+{% extends "basse.html" %}
+{% block title %}Question {{ index }}/{{ total }}{% endblock %}
+{% block content %}
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quiz-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.progress-bar {
+    background: #e0e0e0;
+    height: 6px;
+    border-radius: 3px;
+    margin-bottom: 25px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #4ade80;
+    border-radius: 3px;
+    transition: width 0.3s;
+}
+
+.q-counter {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.q-label {
+    color: #666;
+    font-size: 0.85rem;
+    margin-bottom: 5px;
+}
+
+.q-mot {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1a1a2e;
+    margin-bottom: 30px;
+}
+
+.options {
+    display: grid;
+    gap: 12px;
+}
+
+.opt-btn {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    background: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.opt-btn:hover { border-color: #0f3460; background: #f0f4ff; }
+.opt-btn.selected { border-color: #0f3460; background: #0f3460; color: white; }
+
+.submit-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #0f3460;
+    color: white;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.submit-btn:hover { background: #1a1a2e; }
+</style>
+
+<div class="quiz-container">
+    <div class="progress-bar">
+        <div class="progress-fill" style="width: {{ (index / total * 100) }}%"></div>
+    </div>
+
+    <div class="q-counter">Question {{ index }} sur {{ total }}</div>
+    <div class="q-label">Traduisez en {{ langue[1] }} :</div>
+    <div class="q-mot">{{ question.mot }}</div>
+
+    <form method="post" action="/evaluer-suivant" id="quizForm">
+        <input type="hidden" name="reponse" id="reponseInput" value="">
+        <div class="options">
+            {% for option in question.options %}
+            <button type="button" class="opt-btn" onclick="selectOpt(this, '{{ option|e }}')">
+                {{ option }}
+            </button>
+            {% endfor %}
+        </div>
+        <button type="submit" class="submit-btn">Question suivante →</button>
+    </form>
+</div>
+
+<script>
+let sel = null;
+function selectOpt(btn, val) {
+    document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    sel = val;
+    document.getElementById('reponseInput').value = val;
+}
+
+document.getElementById('quizForm').addEventListener('submit', function(e) {
+    if (!sel) { e.preventDefault(); alert('Choisissez une reponse'); }
+});
+</script>
+
+{% endblock %}

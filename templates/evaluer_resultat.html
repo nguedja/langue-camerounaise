@@ -1,0 +1,112 @@
+{% extends "basse.html" %}
+{% block title %}Resultat evaluation{% endblock %}
+{% block content %}
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.result-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.emoji { font-size: 4rem; margin-bottom: 15px; }
+
+.result-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.result-container p { color: #666; }
+
+.score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.score-circle.reussi { background: linear-gradient(135deg, #4ade80, #16a34a); }
+.score-circle.echec { background: linear-gradient(135deg, #ef4444, #dc2626); }
+
+.score-detail {
+    font-size: 1rem;
+    color: #888;
+    margin-top: 10px;
+}
+
+.btn-group {
+    display: grid;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn {
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.btn-primary { background: #0f3460; color: white; }
+.btn-primary:hover { background: #1a1a2e; }
+.btn-success { background: #16a34a; color: white; }
+.btn-success:hover { background: #15803d; }
+.btn-secondary { background: #e0e0e0; color: #333; }
+.btn-secondary:hover { background: #d0d0d0; }
+</style>
+
+<div class="result-container">
+    {% if reussi %}
+    <div class="emoji">🎉</div>
+    <h1 style="color:#16a34a;">Felicitations !</h1>
+    <p>Vous avez reussi le test de niveau {{ niveau }}</p>
+    {% else %}
+    <div class="emoji">💪</div>
+    <h1 style="color:#ef4444;">Pas encore !</h1>
+    <p>Vous devez obtenir 100% pour passer au niveau superieur</p>
+    {% endif %}
+
+    <div class="score-circle {{ 'reussi' if reussi else 'echec' }}">
+        {{ pourcentage }}%
+    </div>
+
+    <div class="score-detail">
+        {{ score }} bonne(s) reponse(s) sur {{ total }}
+    </div>
+
+    <div class="btn-group">
+        {% if reussi %}
+            <a href="/evaluer/{{ langue[0] }}/{{ niveau }}" class="btn btn-success">Passer au niveau suivant →</a>
+            <a href="/progression" class="btn btn-secondary">Voir ma progression</a>
+        {% else %}
+            <a href="/evaluer/{{ langue[0] }}/{{ niveau }}" class="btn btn-primary">Reessayer le test</a>
+            <a href="/contribuer?niveau={{ niveau }}" class="btn btn-secondary">Enrichir les traductions</a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

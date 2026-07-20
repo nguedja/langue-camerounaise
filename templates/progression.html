@@ -1,0 +1,165 @@
+{% extends "basse.html" %}
+{% block title %}Ma progression{% endblock %}
+{% block content %}
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+}
+
+.header {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.header h1 { font-size: 1.5rem; margin: 0; }
+.header p { margin: 5px 0 0; opacity: 0.8; }
+
+.content { padding: 20px; max-width: 600px; margin: auto; }
+
+.niveau-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 5px solid #e0e0e0;
+}
+
+.niveau-card.active { border-left-color: #0f3460; }
+.niveau-card.completed { border-left-color: #4ade80; }
+.niveau-card.locked { opacity: 0.6; }
+
+.niveau-card .niveau-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.niveau-card .niveau-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1a1a2e;
+}
+
+.niveau-card .niveau-status {
+    font-size: 0.8rem;
+    padding: 3px 10px;
+    border-radius: 12px;
+}
+
+.status-active { background: #dbeafe; color: #1e40af; }
+.status-completed { background: #dcfce7; color: #166534; }
+.status-locked { background: #f3f4f6; color: #6b7280; }
+
+.niveau-card .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.stat-item .stat-label { font-size: 0.8rem; color: #888; }
+.stat-item .stat-value { font-size: 1rem; font-weight: bold; color: #0f3460; }
+
+.niveau-card .actions {
+    margin-top: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+}
+
+.btn-primary { background: #0f3460; color: white; }
+.btn-primary:hover { background: #1a1a2e; }
+.btn-outline { background: white; color: #0f3460; border: 2px solid #0f3460; }
+
+.back-link {
+    display: block;
+    text-align: center;
+    color: #0f3460;
+    text-decoration: none;
+    margin-top: 20px;
+    font-weight: bold;
+}
+</style>
+
+<div class="header">
+    <h1>📊 Ma progression</h1>
+    <p>{{ langue[1] }}</p>
+</div>
+
+<div class="content">
+    {% set ns = namespace(niveau_courant=false) %}
+    {% for info in niveaux_info %}
+        {% set is_completed = info.niveau_max is not none and niveaux_info.index(info) < niveaux_info|length and info.niveau < (progression[3] if progression else 'z') %}
+        {% set is_current = progression and info.niveau == progression[3] %}
+        {% set is_locked = false %}
+
+        {% if progression %}
+            {% set niv_idx = ['debutant','moyen','fort','tres_fort'].index(info.niveau) %}
+            {% set max_idx = ['debutant','moyen','fort','tres_fort'].index(progression[3]) %}
+            {% if niv_idx > max_idx %}
+                {% set is_locked = true %}
+            {% endif %}
+        {% elif info.niveau != 'debutant' %}
+            {% set is_locked = true %}
+        {% endif %}
+
+        <div class="niveau-card {{ 'active' if is_current }} {{ 'completed' if is_completed and not is_current }} {{ 'locked' if is_locked }}">
+            <div class="niveau-header">
+                <div class="niveau-name">{{ info.label }}</div>
+                {% if is_completed and not is_current %}
+                    <span class="niveau-status status-completed">✅ Termine</span>
+                {% elif is_current %}
+                    <span class="niveau-status status-active">▶ En cours</span>
+                {% else %}
+                    <span class="niveau-status status-locked">🔒 Verrouille</span>
+                {% endif %}
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-label">Mots traduits</div>
+                    <div class="stat-value">{{ info.nb_mots_traduit }}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Derniere eval</div>
+                    <div class="stat-value">
+                        {% if info.derniere_eval %}
+                            {{ info.derniere_eval[6] }}%
+                        {% else %}
+                            --
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if not is_locked %}
+            <div class="actions">
+                <a href="/contribuer?niveau={{ info.niveau }}" class="btn btn-outline">Traduire</a>
+                <a href="/evaluer/{{ langue[0] }}/{{ info.niveau }}" class="btn btn-primary">Evaluer</a>
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <a href="/apprendre" class="back-link">← Retour a l'apprentissage</a>
+</div>
+
+{% endblock %}

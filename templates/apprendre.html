@@ -1,242 +1,203 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Apprendre</title>
-
+{% extends "basse.html" %}
+{% block title %}Apprendre{% endblock %}
+{% block content %}
 
 <style>
-
-/* PAGE COMPLETE */
-html, body {
+body {
     margin: 0;
-    padding: 0;
-    width: 100%;
     min-height: 100vh;
     font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
+    background: #f4f6f8;
 }
 
-/* BANDEAU ARC EN CIEL */
-.top-banner {
-    width: 100%;
+.header {
+    background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.header h1 { font-size: 1.5rem; margin: 0; }
+.header p { margin: 5px 0 0; opacity: 0.8; }
+
+.content { padding: 20px; max-width: 600px; margin: auto; }
+
+.welcome-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.welcome-card .flag { font-size: 2rem; }
+.welcome-card h2 { color: #1a1a2e; margin: 10px 0 5px; }
+.welcome-card p { color: #666; margin: 0; }
+
+.action-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.action-card {
+    background: white;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: all 0.3s;
+    border-left: 5px solid #0f3460;
+}
+
+.action-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+.action-card .icon {
+    font-size: 2rem;
+    width: 50px;
+    text-align: center;
+}
+
+.action-card .info h3 {
+    color: #1a1a2e;
+    margin: 0 0 5px;
+    font-size: 1.1rem;
+}
+
+.action-card .info p {
+    color: #888;
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+.action-card.contribuer { border-left-color: #f59e0b; }
+.action-card.evaluer { border-left-color: #16a34a; }
+.action-card.progression { border-left-color: #8b5cf6; }
+
+.section-title {
+    color: #1a1a2e;
+    font-size: 1.1rem;
+    margin: 25px 0 15px;
+    font-weight: bold;
+}
+
+.payment-section {
+    background: white;
+    border-radius: 15px;
     padding: 20px;
     text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-    color: white;
-    background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-top: 20px;
 }
+
+.payment-section h3 { color: #1a1a2e; margin-bottom: 15px; }
 
 .payment-logos {
-    margin-top: 15px;
     display: flex;
     justify-content: center;
-    gap: 30px;
-}
-
-.payment-logos img {
-    width: 120px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.payment-logos img:hover {
-    transform: scale(1.1);
-}
-
-/* SECTION LANGUES */
-.languages-section {
-    flex: 1;
-    padding: 40px 20px;
-    text-align: center;
-}
-
-.languages-section h2 {
-    margin-bottom: 30px;
-}
-
-/* SLIDER LANGUES */
-
-.language-slider {
-    width: 100%;
-    overflow: hidden;
-    position: relative;
-}
-
-.slider-track {
-    display: flex;
-    gap: 40px;
-    animation: scroll 25s linear infinite;
-}
-
-.language-card {
-    min-width: 150px;
-    text-align: center;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.language-card img {
-    width: 120px;
-}
-
-.language-card:hover {
-    transform: scale(1.1);
-}
-
-/* Animation automatique */
-@keyframes scroll {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
-}
-
-/* BOUTON BAS ARC EN CIEL */
-.bottom-banner {
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-    background: linear-gradient(90deg, violet, indigo, blue, green, yellow, orange, red);
-}
-
-.quiz-btn {
-    background: white;
-    color: black;
-    padding: 15px 40px;
-    font-size: 18px;
-    font-weight: bold;
-    border-radius: 40px;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.quiz-btn:hover {
-    background: black;
-    color: white;
-}
-
-</style>
-<style>
-
-/* PAGE 100% */
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #0242cc, #f61c1c);
-}
-
-/* CONTENEUR PRINCIPAL */
-.quiz-container {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-/* QUESTION */
-.question-text {
-    font-size: 32px;
-    font-weight: bold;
-    color: #111;   /* PLUS FONCÉ */
-    margin-bottom: 40px;
-    text-align: center;
-}
-
-/* OPTIONS */
-.options {
-    width: 80%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
     gap: 20px;
 }
 
-/* BOUTONS */
-.option-btn {
-    background: #222;     /* FONCÉ */
-    color: white;
-    border: none;
-    padding: 20px;
-    border-radius: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
+.payment-logos a img {
+    width: 100px;
+    border-radius: 10px;
+    transition: transform 0.3s;
 }
 
-.option-btn:hover {
-    background: #000;
-    transform: scale(1.05);
-}
+.payment-logos a img:hover { transform: scale(1.1); }
 
+@media (max-width: 500px) {
+    .action-card { flex-direction: column; text-align: center; }
+}
 </style>
-</head>
 
-<body>
-    <!-- BANDEAU HAUT -->
-<div class="top-banner">
-    Encouragez-nous 💛
+<div class="header">
+    <h1>Apprendre</h1>
+    <p>{{ user[2] if user else '' }} - {{ langue_origin[1] if langue_origin else 'Aucune langue' }}</p>
+</div>
 
-    <div class="payment-logos">
-        <a href="/paiement/mtn">
-            <img src="{{ url_for('static', filename='images/mtn.jpg') }}" alt="MTN MoMo">
+<div class="content">
+    {% if langue_origin %}
+    <div class="welcome-card">
+        <div class="flag">
+            {% if langue_origin[1] == "Bangante" %}🏔️
+            {% elif langue_origin[1] == "Bassa" %}🌊
+            {% elif langue_origin[1] == "Bafan" %}⛰️
+            {% elif langue_origin[1] == "Bandjoun" %}🏔️
+            {% elif langue_origin[1] == "Ewondo" %}🌳
+            {% elif langue_origin[1] == "Douala" %}🌊
+            {% else %}🗣️
+            {% endif %}
+        </div>
+        <h2>{{ langue_origin[1] }}</h2>
+        <p>{{ langue_origin[3] }}</p>
+        {% if progression %}
+        <p style="margin-top:10px; color:#0f3460; font-weight:bold;">
+            Niveau: {{ niveaux_labels[progression[3]] }}
+        </p>
+        {% else %}
+        <p style="margin-top:10px; color:#888;">
+            Commencez par traduire des mots !
+        </p>
+        {% endif %}
+    </div>
+
+    <div class="section-title">Que voulez-vous faire ?</div>
+
+    <div class="action-grid">
+        <a href="/contribuer" class="action-card contribuer">
+            <div class="icon">📝</div>
+            <div class="info">
+                <h3>Traduire des mots</h3>
+                <p>Enrichissez la plateforme avec vos traductions</p>
+            </div>
         </a>
 
-        <a href="/paiement/orange">
-            <img src="{{ url_for('static', filename='images/orange.jpg') }}" alt="Orange Money">
+        <a href="/evaluer/{{ langue_origin[0] }}/debutant" class="action-card evaluer">
+            <div class="icon">📝</div>
+            <div class="info">
+                <h3>Passer un test</h3>
+                <p>Evaluez vos connaissances et debloquez les niveaux</p>
+            </div>
+        </a>
+
+        <a href="/progression" class="action-card progression">
+            <div class="icon">📊</div>
+            <div class="info">
+                <h3>Voir ma progression</h3>
+                <p>Suivez votre avancement</p>
+            </div>
         </a>
     </div>
-</div>
 
-<div class="bottom-banner">
-    <h2>clique ici pour apprendre une langue.</h2>
-    <a class="quiz-btn" href="/langues">🚀 c'est partie </a>
-</div>
-<div class="bottom-banner">
-    <h2>voir les modules inscrits dans chaque langue!!</h2>
-    <a class="quiz-btn" href="/modules">module des langues!</a>
-</div>
+    {% else %}
+    <div class="welcome-card">
+        <div class="flag">🇨🇲</div>
+        <h2>Bienvenue !</h2>
+        <p>Choisissez d'abord votre langue maternelle pour commencer</p>
+        <a href="/setup-langue" style="display:inline-block; margin-top:15px; padding:12px 30px; background:#0f3460; color:white; text-decoration:none; border-radius:10px;">
+            Choisir ma langue →
+        </a>
+    </div>
+    {% endif %}
 
-
-
-<!-- SECTION LANGUES -->
-<div class="languages-section">
-    <h2>cliquer sur un logo (village)  pour adherer a l'histoire de ta culture.</h2>
-
-    <div class="language-slider">
-        <div class="slider-track">
-
-            <div class="language-card" onclick="window.location.href='/langue/bangante'">
-                <img src="{{ url_for('static', filename='images/bangante.jpg') }}">
-                <p>Bangangté</p>
-            </div>
-
-            <div class="language-card" onclick="window.location.href='/langue/bafoussam'">
-                <img src="{{ url_for('static', filename='images/bafoussam.jpg') }}">
-                <p>Bafoussam</p>
-            </div>
-
-            <div class="language-card" onclick="window.location.href='/langue/douala'">
-                <img src="{{ url_for('static', filename='images/douala.jpg') }}">
-                <p>Douala</p>
-            </div>
-            
+    <div class="payment-section">
+        <h3>Encouragez-nous 💛</h3>
+        <div class="payment-logos">
+            <a href="/paiement/mtn">
+                <img src="{{ url_for('static', filename='images/mtn.jpg') }}" alt="MTN MoMo">
+            </a>
+            <a href="/paiement/orange">
+                <img src="{{ url_for('static', filename='images/orange.jpg') }}" alt="Orange Money">
+            </a>
         </div>
     </div>
 </div>
 
-<!-- BOUTON BAS -->
-<div class="bottom-banner">
-    <h2>clique ici pour apprendre une langue.</h2>
-    <a class="quiz-btn" href="/langues">🚀 c'est partie</a>
-</div>
-
-</body>
-</html>
+{% endblock %}

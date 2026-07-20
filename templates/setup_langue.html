@@ -1,0 +1,143 @@
+{% extends "basse.html" %}
+{% block title %}Choisir ma langue{% endblock %}
+{% block content %}
+
+<style>
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+.setup-container {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+
+.setup-container h1 {
+    color: #1a1a2e;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.setup-container p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+.flag { font-size: 3rem; margin-bottom: 15px; }
+
+.langues-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.langue-card {
+    border: 2px solid #e0e0e0;
+    border-radius: 15px;
+    padding: 20px 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.langue-card:hover, .langue-card.selected {
+    border-color: #0f3460;
+    background: #f0f4ff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(15,52,96,0.2);
+}
+
+.langue-card .nom {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #1a1a2e;
+    margin: 5px 0;
+}
+
+.langue-card .region {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.langue-card .icone {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.btn-valider {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    background: #0f3460;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.btn-valider:hover { background: #1a1a2e; }
+.btn-valider:disabled { background: #ccc; cursor: not-allowed; }
+
+@media (max-width: 500px) {
+    .langues-grid { grid-template-columns: 1fr; }
+    .setup-container { padding: 25px; }
+}
+</style>
+
+<div class="setup-container">
+    <div class="flag">🇨🇲</div>
+    <h1>Quelle est votre langue maternelle ?</h1>
+    <p>Selectionnez la langue que vous parlez a la maison</p>
+
+    <form method="post" id="langueForm">
+        <input type="hidden" name="langue_id" id="langue_id" value="">
+
+        <div class="langues-grid">
+            {% for langue in langues %}
+            <div class="langue-card" onclick="selectLangue({{ langue[0 }}, this)" data-id="{{ langue[0] }}">
+                <div class="icone">
+                    {% if langue[1] == "Bangante" %}🏔️
+                    {% elif langue[1] == "Bassa" %}🌊
+                    {% elif langue[1] == "Bafan" %}⛰️
+                    {% elif langue[1] == "Bandjoun" %}🏔️
+                    {% elif langue[1] == "Ewondo" %}🌳
+                    {% elif langue[1] == "Douala" %}🌊
+                    {% else %}🗣️
+                    {% endif %}
+                </div>
+                <div class="nom">{{ langue[1] }}</div>
+                <div class="region">{{ langue[3] }}</div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn-valider" id="btnValider" disabled>
+            Continuer
+        </button>
+    </form>
+</div>
+
+<script>
+function selectLangue(id, el) {
+    document.querySelectorAll('.langue-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('langue_id').value = id;
+    document.getElementById('btnValider').disabled = false;
+}
+</script>
+
+{% endblock %}
