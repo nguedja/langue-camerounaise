@@ -1,69 +1,61 @@
-{% extends "base.html" %}
-{% block title %}Connexion{% endblock %}
 
+
+{% extends "basse.html" %}
 {% block content %}
 
 <style>
 
-/* FOND ARC-EN-CIEL ANIMÉ */
+/* FOND NOIR */
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
-    background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-    background-size: 400% 400%;
-    animation: rainbow 10s ease infinite;
+    background: #000 !important;
 }
 
-/* Animation */
-@keyframes rainbow {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
-}
-
-/* Carte formulaire */
+/* Carte formulaire AGRANDIE */
 .auth-container {
     background: white;
-    padding: 40px;
+    padding: 60px;
     border-radius: 20px;
-    width: 90%;
-    max-width: 400px;
+    width: 80%;          /* prend 70% de l'écran */
+     min-height: 70vh;
+    max-width: 1000px;    /* limite raisonnable sur grand écran */
     text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
 }
 
 /* Titre */
 .auth-container h2 {
     margin-bottom: 20px;
-    font-size: 1.8rem;
-    color: #333;
+    font-size: 2rem;
+    color: #fff;
 }
 
 /* Inputs */
 .form-auth input {
     width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border-radius: 10px;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 12px;
     border: 1px solid #ccc;
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
 /* Bouton */
 .btn {
     width: 100%;
-    padding: 12px;
+    padding: 15px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #333;
     color: white;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 .btn:hover {
@@ -72,18 +64,20 @@ body {
 
 /* Liens */
 .auth-container a {
-    color: #333;
+    color: #ccc;
     font-weight: bold;
     text-decoration: none;
 }
 
 .auth-container a:hover {
     text-decoration: underline;
+    color: #fff;
 }
 
-/* Responsive */
+/* Responsive mobile */
 @media (max-width: 768px) {
     .auth-container {
+        width: 90%;
         padding: 30px;
     }
 
