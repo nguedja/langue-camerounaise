@@ -28,6 +28,16 @@ class Database:
         )
         """)
 
+        cur.execute("PRAGMA table_info(users)")
+        existing_cols = [row[1] for row in cur.fetchall()]
+
+        if 'langue_origin' not in existing_cols:
+            cur.execute("ALTER TABLE users ADD COLUMN langue_origin TEXT DEFAULT NULL")
+        if 'role' not in existing_cols:
+            cur.execute("ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'utilisateur'")
+        if 'date_inscription' not in existing_cols:
+            cur.execute("ALTER TABLE users ADD COLUMN date_inscription TEXT")
+
         cur.execute("""
         CREATE TABLE IF NOT EXISTS scores(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -517,3 +527,23 @@ class Database:
         count = cur.fetchone()[0]
         conn.close()
         return count
+
+    def get_tous_les_mots(self, langue_id, niveau):
+        conn = self.connect()
+        cur = conn.cursor()
+        cur.execute(
+            """SELECT m.id, m.mot, c.nom as categorie,
+                      t_sys.traduction_texte as reference,
+                      t_user.traduction_texte as ma_traduction
+               FROM mots_francais m
+               JOIN categories c ON m.categorie_id = c.id
+               LEFT JOIN traductions t_sys ON m.id = t_sys.mot_id AND t_sys.langue_id = ? AND t_sys.user_id = 0
+               LEFT JOIN traductions t_user ON m.id = t_user.mot_id AND t_user.langue_id = ? AND t_user.user_id != 0
+               WHERE m.niveau = ?
+               GROUP BY m.id
+               ORDER BY c.ordre, m.ordre""",
+            (langue_id, langue_id, niveau),
+        )
+        data = cur.fetchall()
+        conn.close()
+        return data

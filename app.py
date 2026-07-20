@@ -137,18 +137,16 @@ def contribuer():
             db.ajouter_traduction(mot_id, langue_origin_id, traduction_texte, session["user_id"])
         return redirect(f"/contribuer?niveau={niveau}")
 
-    mots_sans = db.get_mots_sans_traduction(langue_origin_id, niveau)
-    mots_avec = db.get_mots_avec_traduction(langue_origin_id, niveau)
-    total_mots = len(mots_sans) + len(mots_avec)
-    nb_traduit = len(mots_avec)
+    tous_les_mots = db.get_tous_les_mots(langue_origin_id, niveau)
+    total_mots = len(tous_les_mots)
+    nb_traduit_user = sum(1 for m in tous_les_mots if m[4])
 
     return render_template("contribuer.html",
                            langue=langue,
                            niveau=niveau,
-                           mots_sans_traduction=mots_sans,
-                           mots_avec_traduction=mots_avec,
+                           tous_les_mots=tous_les_mots,
                            total_mots=total_mots,
-                           nb_traduit=nb_traduit,
+                           nb_traduit=nb_traduit_user,
                            niveaux=NIVEAUX_ORDRE,
                            niveaux_labels=NIVEAUX_LABELS)
 
