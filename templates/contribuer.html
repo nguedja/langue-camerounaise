@@ -215,7 +215,7 @@ body {
         {% else %}
         <div class="traduction-form">
             <input type="text" id="input-{{ mot[0] }}" placeholder="Votre traduction en {{ langue[1] }}">
-            <button class="vocal-btn" onclick="startRecording({{ mot[0] }})" title="Enregistrer vocalement">🎤</button>
+            <button class="vocal-btn" id="mic-{{ mot[0] }}" onclick="startRecording({{ mot[0] }})" title="Dicter la traduction">🎤</button>
             <button onclick="soumettre({{ mot[0] }}, {{ langue[0] }})">Envoyer</button>
         </div>
         {% endif %}
@@ -232,13 +232,13 @@ body {
 </div>
 
 <script>
-let mediaRecorder = null;
-let audioChunks = [];
-
 function soumettre(motId, langueId) {
     const input = document.getElementById('input-' + motId);
     const traduction = input.value.trim();
-    if (!traduction) return;
+    if (!traduction) {
+        alert('Veuillez ecrire ou dicter une traduction');
+        return;
+    }
 
     fetch('/api/traduire', {
         method: 'POST',
@@ -250,56 +250,66 @@ function soumettre(motId, langueId) {
         if (data.success) {
             const card = document.getElementById('mot-' + motId);
             card.classList.add('traduit');
+            const francais = card.querySelector('.francais').textContent;
+            const categorie = card.querySelector('.categorie').textContent;
             card.innerHTML = `
-                <div class="francais">${card.querySelector('.francais').textContent}</div>
-                <div class="categorie">${card.querySelector('.categorie').textContent}</div>
-                <div class="traduction-val">${traduction}</div>
+                <div class="francais">${francais}</div>
+                <div class="categorie">${categorie}</div>
+                <div class="traduction-val">Votre traduction : ${traduction}</div>
             `;
         }
-    });
+    })
+    .catch(e => alert('Erreur d\'envoi'));
 }
 
-async function startRecording(motId) {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({audio: true});
-        mediaRecorder = new MediaRecorder(stream);
-        audioChunks = [];
+function startRecording(motId) {
+    const input = document.getElementById('input-' + motId);
+    const btn = document.getElementById('mic-' + motId);
 
-        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-        mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, {type: 'audio/webm'});
-            uploadAudio(motId, audioBlob);
-            stream.getTracks().forEach(t => t.stop());
-        };
-
-        mediaRecorder.start();
-        const btn = event.target;
-        btn.classList.add('recording');
-        btn.textContent = '⏹️';
-
-        setTimeout(() => {
-            mediaRecorder.stop();
-            btn.classList.remove('recording');
-            btn.textContent = '🎤';
-        }, 5000);
-    } catch(e) {
-        alert('Microphone non disponible');
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert('La reconnaissance vocale n\'est pas supportee sur ce navigateur.\n\nEssayez Chrome ou Safari.');
+        return;
     }
-}
 
-function uploadAudio(motId, blob) {
-    const formData = new FormData();
-    formData.append('audio', blob, 'recording.webm');
-    formData.append('mot_id', motId);
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
 
-    fetch('/api/traduire-vocal', {
-        method: 'POST',
-        body: formData
-    }).then(r => r.json()).then(data => {
-        if (data.success) {
-            alert('Enregistrement envoye !');
+    recognition.lang = 'fr-FR';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    btn.classList.add('recording');
+    btn.textContent = '⏹️';
+    input.placeholder = 'Ecoute en cours...';
+
+    recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        input.value = transcript;
+        input.placeholder = 'Votre traduction en langue locale';
+        btn.classList.remove('recording');
+        btn.textContent = '🎤';
+    };
+
+    recognition.onerror = function(event) {
+        btn.classList.remove('recording');
+        btn.textContent = '🎤';
+        input.placeholder = 'Votre traduction en langue locale';
+        if (event.error === 'not-allowed') {
+            alert('Microphone non autorise.\n\nAutorisez l\'acces au microphone dans les parametres de votre navigateur.');
+        } else if (event.error === 'no-speech') {
+            alert('Aucun son detecte.\n\nParlez plus fort et reessayez.');
+        } else {
+            alert('Erreur de reconnaissance vocale: ' + event.error);
         }
-    });
+    };
+
+    recognition.onend = function() {
+        btn.classList.remove('recording');
+        btn.textContent = '🎤';
+        input.placeholder = 'Votre traduction en langue locale';
+    };
+
+    recognition.start();
 }
 </script>
 
